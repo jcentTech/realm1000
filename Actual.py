@@ -39,26 +39,31 @@ def reload():
     canvas1 = Canvas(root, width=500, height=170, bg="green")
     canvas1.grid(row=1,column=0)
     
-    canvas2 = Canvas(root, width=500, height=70, bg="green")
-    canvas2.grid(row=2,column=0)
+    canvas2 = Canvas(root, width=500, height=170, bg="green")
+    canvas2.grid(row=1,column=1)
     
     canvas3 = Canvas(root, width=500, height=100, bg="green")
-    canvas3.grid(row=3,column=0)
+    canvas3.grid(row=2,column=0)
     
     canvas4 = Canvas(root, width=500, height=100, bg="green")
-    canvas4.grid(row=4,column=0)
+    canvas4.grid(row=2,column=1)
     
     canvas5 = Canvas(root, width=500, height=70, bg="green")
-    canvas5.grid(row=5,column=0)
+    canvas5.grid(row=3,column=0)
     
     canvas6 = Canvas(root, width=500, height=70, bg="green")
-    canvas6.grid(row=6,column=0)
+    canvas6.grid(row=3,column=1)
     
-    canvas7 = Canvas(root, width=500, height=100, bg="green")
-    canvas7.grid(row=7,column=0)
+    canvas7 = Canvas(root, width=500, height=150, bg="green")
+    canvas7.grid(row=4,column=0)
     
-    canvas8 = Canvas(root, width=500, height=70, bg="green")
-    canvas8.grid(row=8,column=0)
+    canvas8 = Canvas(root, width=500, height=150, bg="green")
+    canvas8.grid(row=4,column=1)
+
+    canvas9 = Canvas(root,width=1000,height=100, bg="green")
+    canvas9.grid(row=5,column=0,columnspan=2)
+
+    
     
     #monitoring
     monitor_username = p.username()
@@ -111,10 +116,14 @@ def reload():
     canvas5.create_text(28,50,font=("Ariel",12), text="{}%".format(monitor_disk_usage))
     
     canvas6.create_text(68,15,font=("Ariel",12,font.BOLD), text="Ethernet Usage")
-    canvas6.create_text(122,40,font=("Ariel",12), text="Total Bytes sent: {:0.3f} Kbps".format(monitor_network_sent/1024))
-    canvas6.create_text(145,60,font=("Ariel",12), text="Total Bytes Received: {:0.3f} Kbps".format(monitor_network_recv/1024))
+    canvas6.create_text(127,40,font=("Ariel",12), text="Total Bytes sent: {:0.2f} Kbps".format(monitor_network_sent/1024))
+    canvas6.create_text(150,60,font=("Ariel",12), text="Total Bytes Received: {:0.2f} Kbps".format(monitor_network_recv/1024))
     
     canvas7.create_text(30,15, font=("Ariel",12, font.BOLD), text="GPU")
+
+    canvas8.create_text(50,15, font=("Ariel",12, font.BOLD), text="Speed Test:")
+    
+
 
     
 
@@ -123,59 +132,29 @@ def reload():
         root.destroy()
         reload()
 
-    def openNewWindow():
-     
-        # Toplevel object which will
-        # be treated as a new window
-        NWindow = Toplevel(root)
- 
-         # sets the title of the
-        # Toplevel widget
-        NWindow.title("Speet Test...")
-       
- 
-        # sets the geometry of toplevel
-        NWindow.geometry("500x500")
-        NWindow.resizable(width=False, height=False)
-        NWindow.configure(background="black")
-
-
-      
-        # A Label widget to show in toplevel
+    def speed_test():
         test = speedtest.Speedtest()
-
-        Label(NWindow,text ="Loading Server List...",).pack()
-        test.get_servers() 
-
-        Label(NWindow,text ="Choosing Best Server....").pack()
+        test.get_servers()
         best = test.get_best_server()
-
-        Label(NWindow,text =f"Found: {best['host']} Located in {best['country']}").pack()
-
-
-        Label(NWindow,text ="performing download test......").pack()
         download_result = test.download()
-
-        Label(NWindow,text ="performing upload test......").pack()
         upload_result = test.upload()
         ping_result = test.results.ping
+
+        canvas8.create_text(130,40,font=("Ariel",12), text=f"Found: {best['host']} Located in {best['country']}")
+        canvas8.create_text(119,60,font=("Ariel",12),text =f"Download Speed: {download_result / 1024 / 1024:.2f} Mbit/s")
+        canvas8.create_text(105,75, font=("Ariel",12), text=f"Upload Speed: {upload_result / 1024 / 1024:.2f} Mbit/s") 
+        canvas8.create_text(58,95, font=("Ariel",12), text=f"Ping: {ping_result:.2f} ms") 
         
-        Label(NWindow,text =f"Download Speed: {download_result / 1024 / 1024:.2f} Mbit/s").pack()
-        Label(NWindow,text =f"Upload Speed: {upload_result / 1024 / 1024:.2f} Mbit/s").pack()
-        Label(NWindow,text =f"Ping: {ping_result:.2f} ms").pack()
-        NWindow.mainloop()
-   
 
 
   
 
 
-    btn_refresh = tk.Button(root, text="Speed Test", command=openNewWindow, bg="Blue", fg="white")
-    btn_refresh.grid(row=8,column=0,sticky=N,padx=5,pady=10)
+    btn_refresh = tk.Button(root, text="Speed Test", bg="Blue", fg="white",command=speed_test)
+    btn_refresh.place(height=50, width=150,x=550, y=530)
 
     btn_refresh = tk.Button(root, text="Refresh", command=destroy, bg="Blue", fg="white")
-    btn_refresh.grid(row=8,column=0,sticky=S,padx=8,pady=8)
-
+    btn_refresh.place(height=50, width=150,x=300, y=530)
 
 
     #end
@@ -187,5 +166,4 @@ def reload():
 
     
 reload()
-
 
