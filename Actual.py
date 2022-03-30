@@ -6,7 +6,7 @@ from platform import platform
 from sqlite3 import Row
 import tkinter as tk
 from tkinter import*
-from turtle import position, right, width
+from turtle import bgcolor, position, right, width
 import psutil
 from tkinter import font
 from psutil import disk_usage
@@ -120,12 +120,23 @@ def reload():
     canvas6.create_text(150,60,font=("Ariel",12), text="Total Bytes Received: {:0.2f} Kbps".format(monitor_network_recv/1024))
     
     canvas7.create_text(30,15, font=("Ariel",12, font.BOLD), text="GPU")
+    canvas7.create_text(30,30, font=("Ariel",12, font.BOLD), text=GPUtil.showUtilization())
 
-    canvas8.create_text(50,15, font=("Ariel",12, font.BOLD), text="Speed Test:")
-    
+    canvas8.create_text(80,15, font=("Ariel",12, font.BOLD), text="Internet Speed Test")
 
+    mylabel1 = tk.Label(font=("Ariel,",12,font.BOLD),text = "Click the speed test to run!",bg="green")
+    mylabel1.place(x=510,y=380)
 
-    
+    mylabel2 = tk.Label(text = "",bg="green")
+    mylabel2.place(x=510,y=400)
+
+    mylabel3 = tk.Label(text = "",bg="green")
+    mylabel3.place(x=510,y=420)
+
+    mylabel4 = tk.Label(text = "",bg="green")
+    mylabel4.place(x=510,y=440)
+
+   
 
         
     def destroy():
@@ -133,6 +144,8 @@ def reload():
         reload()
 
     def speed_test():
+
+
         test = speedtest.Speedtest()
         test.get_servers()
         best = test.get_best_server()
@@ -140,12 +153,19 @@ def reload():
         upload_result = test.upload()
         ping_result = test.results.ping
 
-        canvas8.create_text(130,40,font=("Ariel",12), text=f"Found: {best['host']} Located in {best['country']}")
+        
+        
+        mylabel1.config(font=("Ariel",12),text = f"Found: {best['host']} Located in {best['country']}")
+        mylabel2.config(font=("Ariel",12),text =f"Download Speed: {download_result / 1024 / 1024:.2f} Mbit/s")
+        mylabel3.config(font=("Ariel",12),text =f"Upload Speed: {upload_result / 1024 / 1024:.2f} Mbit/s")
+        mylabel4.config(font=("Ariel",12),text =f"Ping: {ping_result:.2f} ms")
+
+
+        '''
+        canvas8.create_text(150,40,font=("Ariel",12), text=f"Found: {best['host']} Located in {best['country']}")
         canvas8.create_text(119,60,font=("Ariel",12),text =f"Download Speed: {download_result / 1024 / 1024:.2f} Mbit/s")
         canvas8.create_text(105,75, font=("Ariel",12), text=f"Upload Speed: {upload_result / 1024 / 1024:.2f} Mbit/s") 
-        canvas8.create_text(58,95, font=("Ariel",12), text=f"Ping: {ping_result:.2f} ms") 
-        
-
+        canvas8.create_text(58,95, font=("Ariel",12), text=f"Ping: {ping_result:.2f} ms")'''
 
   
 
