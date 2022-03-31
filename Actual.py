@@ -20,6 +20,9 @@ import speedtest
 import wmi
 import socket
 
+from requests import get
+
+
 
 
 p = psutil.Process()
@@ -149,6 +152,9 @@ def reload():
     mylabel5 = tk.Label(text = "",bg="black")
     mylabel5.place(x=510,y=470)
 
+    mylabel6 = tk.Label(text = "",bg="black")
+    mylabel6.place(x=510,y=490)
+
    
 
         
@@ -166,6 +172,8 @@ def reload():
         ping_result = test.results.ping
         hostname = socket.gethostname()
         ip_address = socket.gethostbyname(hostname)
+        public_ip = get('https://api.ipify.org').text
+
 
         
         
@@ -173,14 +181,15 @@ def reload():
         mylabel2.config(fg="green",font=("Ariel",12),text =f"Download Speed: {download_result / 1024 / 1024:.2f} Mbit/s")
         mylabel3.config(fg="green",font=("Ariel",12),text =f"Upload Speed: {upload_result / 1024 / 1024:.2f} Mbit/s")
         mylabel4.config(fg="green",font=("Ariel",12),text =f"Ping: {ping_result:.2f} ms")
-        mylabel5.config(fg="green",font=("Ariel",12),text =f"IP address: {ip_address}")
+        mylabel5.config(fg="green",font=("Ariel",12),text =f"Local IP address: {ip_address}")
+        mylabel6.config(fg="green",font=("Ariel",12),text =f"Public IP address: {public_ip}")
 
 
     btn_refresh = tk.Button(root, text="Speed Test", bg="Blue", fg="white",command=speed_test)
-    btn_refresh.place(height=50, width=150,x=500, y=530)
+    btn_refresh.place(height=50, width=150,x=520, y=550)
 
     btn_refresh = tk.Button(root, text="Refresh", command=destroy, bg="Blue", fg="white")
-    btn_refresh.place(height=50, width=150,x=255, y=530)
+    btn_refresh.place(height=50, width=150,x=300, y=550)
 
 
 
