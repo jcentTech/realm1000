@@ -20,6 +20,7 @@ import speedtest
 import wmi
 import socket
 
+import os
 from requests import get
 
 
@@ -155,6 +156,11 @@ def reload():
     mylabel6 = tk.Label(text = "",bg="black")
     mylabel6.place(x=510,y=490)
 
+    hostname = socket.gethostname()
+    ip_address = socket.gethostbyname(hostname)
+    public_ip = os.popen('curl -s ifconfig.me').readline()
+
+
    
 
         
@@ -170,10 +176,7 @@ def reload():
         download_result = test.download()
         upload_result = test.upload()
         ping_result = test.results.ping
-        hostname = socket.gethostname()
-        ip_address = socket.gethostbyname(hostname)
-        public_ip = get('https://api.ipify.org').text
-
+        
 
         
         
